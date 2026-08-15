@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "todoist",
+  "name": "Todoist",
+  "version": "1.0.0",
+  "author": "mateus",
+  "description": "Suas tarefas do Todoist na barra, com popup para ver, adicionar e completar",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Todoist",
+    "description": "Abas Inbox/Hoje/Próximos, adicionar tarefa e completar direto no popup",
+    "category": "Productivity",
+    "aliases": [
+      "tasks",
+      "todo"
+    ],
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
