@@ -160,6 +160,7 @@ Panel {
   function cancelEditingToken() {
     editingToken = false
     tokenError = false
+    tokenField.text = ""
     Qt.callLater(function() { if (keyCatcher) keyCatcher.forceActiveFocus() })
   }
 
@@ -189,6 +190,7 @@ Panel {
         root.cancelEditingToken()
         root.checkAuth()
       } else {
+        tokenField.text = ""
         root.tokenError = true
       }
     }
