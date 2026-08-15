@@ -145,10 +145,12 @@ Panel {
 
   property bool editingToken: false
   property bool savingToken: false
+  property bool tokenError: false
   property bool loggingIn: false
 
   function startEditingToken() {
     editingToken = true
+    tokenError = false
     Qt.callLater(function() {
       tokenField.text = ""
       tokenField.forceActiveFocus()
@@ -157,6 +159,7 @@ Panel {
 
   function cancelEditingToken() {
     editingToken = false
+    tokenError = false
     Qt.callLater(function() { if (keyCatcher) keyCatcher.forceActiveFocus() })
   }
 
@@ -164,17 +167,29 @@ Panel {
     var value = tokenField.text.trim()
     if (value === "") { cancelEditingToken(); return }
     savingToken = true
-    saveTokenProc.command = ["td", "auth", "token", value]
+    tokenError = false
+    saveTokenProc.pendingToken = value
+    saveTokenProc.command = ["td", "auth", "token"]
     saveTokenProc.running = true
   }
 
+  // Token is written to the process's stdin (td prompts for it) rather than
+  // passed as a command argument, so it never shows up in `ps`/`/proc/*/cmdline`.
   Process {
     id: saveTokenProc
+    property string pendingToken: ""
+    stdinEnabled: true
+    onStarted: {
+      write(pendingToken + "\n")
+      pendingToken = ""
+    }
     onExited: function(exitCode) {
       root.savingToken = false
       if (exitCode === 0) {
         root.cancelEditingToken()
         root.checkAuth()
+      } else {
+        root.tokenError = true
       }
     }
   }
@@ -532,11 +547,12 @@ Panel {
             }
             PanelActionButton {
               id: logoutButton
-              iconText: root.hasToken ? "" : "󰒓"
-              tooltipText: root.hasToken ? Strings.t(root.language, "tooltipLogout") : Strings.t(root.language, "tooltipAuthSetup")
+              visible: root.hasToken
+              iconText: ""
+              tooltipText: Strings.t(root.language, "tooltipLogout")
               foreground: root.contentForeground
               fontFamily: root.contentFontFamily
-              onClicked: root.hasToken ? root.logout() : root.startEditingToken()
+              onClicked: root.logout()
 
               Image {
                 id: logOutSource
@@ -550,7 +566,6 @@ Panel {
               MultiEffect {
                 anchors.fill: logOutSource
                 source: logOutSource
-                visible: root.hasToken
                 colorization: 1.0
                 colorizationColor: logoutButton.foreground
               }
@@ -703,6 +718,8 @@ Panel {
               placeholderText: Strings.t(root.language, "tokenPlaceholder")
               foreground: root.contentForeground
 
+              onTextChanged: root.tokenError = false
+
               Keys.onPressed: function(event) {
                 if (event.key === Qt.Key_Escape) { root.cancelEditingToken(); event.accepted = true }
                 else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) { root.commitToken(); event.accepted = true }
@@ -717,6 +734,16 @@ Panel {
               bordered: true
               onClicked: root.commitToken()
             }
+          }
+
+          Text {
+            width: parent.width
+            visible: root.tokenError
+            wrapMode: Text.WordWrap
+            text: Strings.t(root.language, "tokenError")
+            color: root.bar ? root.bar.urgent : Color.urgent
+            font.family: root.contentFontFamily
+            font.pixelSize: Style.font.bodySmall
           }
         }
 

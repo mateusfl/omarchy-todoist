@@ -14,7 +14,6 @@ var DICTS = {
   "en-US": {
     tooltipRefresh: "Refresh",
     tooltipLogout: "Log out",
-    tooltipAuthSetup: "Set up authentication",
     tooltipSettings: "Settings",
     tooltipConfigureToken: "Set up your Todoist token",
     tooltipTasksDue: "task(s) overdue or due today",
@@ -32,6 +31,7 @@ var DICTS = {
     tokenPlaceholder: "Todoist token",
     saveButtonIdle: "Save",
     savingEllipsis: "…",
+    tokenError: "Couldn't save that token. Double-check it and try again.",
     quickAddPlaceholder: "Add a task… (e.g. Meeting tomorrow p1 #Work)",
     sectionOverdue: "OVERDUE",
     sectionToday: "TODAY",
@@ -45,7 +45,6 @@ var DICTS = {
   "pt-BR": {
     tooltipRefresh: "Atualizar",
     tooltipLogout: "Sair",
-    tooltipAuthSetup: "Configurar autenticação",
     tooltipSettings: "Configurações",
     tooltipConfigureToken: "Configurar token do Todoist",
     tooltipTasksDue: "tarefa(s) atrasada(s) ou para hoje",
@@ -63,6 +62,7 @@ var DICTS = {
     tokenPlaceholder: "Token do Todoist",
     saveButtonIdle: "Salvar",
     savingEllipsis: "…",
+    tokenError: "Não foi possível salvar esse token. Confira e tente novamente.",
     quickAddPlaceholder: "Adicionar tarefa… (ex: Reunião amanhã p1 #Trabalho)",
     sectionOverdue: "ATRASADAS",
     sectionToday: "HOJE",
