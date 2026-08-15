@@ -1,9 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "todoist",
+  "id": "mateusfl.todoist",
   "name": "Todoist",
   "version": "1.0.0",
-  "author": "mateus",
+  "author": "mateusfl",
+  "license": "MIT",
   "description": "Suas tarefas do Todoist na barra, com popup para ver, adicionar e completar",
   "kinds": [
     "bar-widget"

@@ -11,7 +11,7 @@ import "Strings.js" as Strings
 // forces a refresh.
 BarWidget {
   id: root
-  moduleName: "todoist"
+  moduleName: "mateusfl.todoist"
 
   function injectPanel() {
     var target = panelLoader.item

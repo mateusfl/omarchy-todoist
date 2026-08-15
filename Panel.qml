@@ -16,8 +16,8 @@ import "Strings.js" as Strings
 // are Todoist's own vocabulary.
 Panel {
   id: root
-  moduleName: "todoist"
-  ipcTarget: "todoist"
+  moduleName: "mateusfl.todoist"
+  ipcTarget: "mateusfl.todoist"
   manageIpc: false
 
   property var anchorItem: null
