@@ -239,6 +239,7 @@ Panel {
   readonly property string tomorrowKey: Model.dateKeyFromDate(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1))
   readonly property var groups: Model.buildGroups(rawTasks, rawProjects, todayKey, tomorrowKey, dueLabels)
   readonly property bool hasAnyTask: groups.overdue.length > 0 || groups.today.length > 0 || groups.upcoming.length > 0
+  readonly property int totalTaskCount: groups.overdue.length + groups.today.length + groups.upcoming.length
   readonly property string emptyText: root.tabById(activeTab).emptyText
 
   SystemClock {
@@ -396,6 +397,11 @@ Panel {
     contentWidth: panel.fittedContentWidth(Style.space(360))
     contentHeight: panel.fittedContentHeight(mainColumn.implicitHeight, Style.space(480))
 
+    readonly property real listChromeHeight: headerBox.height + headerDivider.height
+      + (tabsRow.visible ? tabsRow.height : 0) + (quickAddRow.visible ? quickAddRow.height : 0)
+      + mainColumn.spacing * 2 + mainContent.spacing * 2 + panel.verticalContentInset
+    readonly property real maxListHeight: Math.max(Style.space(120), Style.space(480) - listChromeHeight)
+
     PanelKeyCatcher {
       id: keyCatcher
       anchors.fill: parent
@@ -415,6 +421,7 @@ Panel {
 
         // ---- Header: title + refresh + auth toggle.
         Item {
+          id: headerBox
           width: parent.width
           height: Math.max(headerRow.height, actionsRow.implicitHeight)
 
@@ -576,6 +583,7 @@ Panel {
         }
 
         Rectangle {
+          id: headerDivider
           width: parent.width
           height: Style.spacing.hairline
           color: root.contentForeground
@@ -609,6 +617,7 @@ Panel {
 
         // ---- Tabs: which `td` list backs the view below.
         Row {
+          id: tabsRow
           visible: root.hasToken && !root.editingToken
           spacing: Style.space(6)
 
@@ -632,6 +641,7 @@ Panel {
         // ---- Quick add. Same natural-language syntax as Todoist's own
         //      quick-add box: "Reunião amanhã p1 #Trabalho".
         Row {
+          id: quickAddRow
           visible: root.hasToken && !root.editingToken
           width: parent.width
           height: Style.spacing.controlHeight
@@ -754,7 +764,9 @@ Panel {
           id: listScroll
           visible: root.hasToken && !root.editingToken
           width: parent.width
-          height: Math.min(listColumn.implicitHeight, Style.space(420))
+          height: root.totalTaskCount > 5
+            ? Math.min(listColumn.implicitHeight, panel.maxListHeight)
+            : listColumn.implicitHeight
           contentWidth: width
           contentHeight: listColumn.implicitHeight
           clip: true
