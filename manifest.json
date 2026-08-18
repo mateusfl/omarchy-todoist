@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "author": "mateusfl",
   "license": "MIT",
-  "description": "Suas tarefas do Todoist na barra, com popup para ver, adicionar e completar",
+  "description": "Your Todoist tasks in the bar, with a popup to view, add, and complete them",
   "kinds": [
     "bar-widget"
   ],
@@ -14,7 +14,7 @@
   },
   "barWidget": {
     "displayName": "Todoist",
-    "description": "Abas Inbox/Hoje/Próximos, adicionar tarefa e completar direto no popup",
+    "description": "Inbox/Today/Upcoming tabs, add tasks and complete them right in the popup",
     "category": "Productivity",
     "aliases": [
       "tasks",
