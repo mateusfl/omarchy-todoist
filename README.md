@@ -18,6 +18,17 @@ stores your API token itself, `td` keeps it in your OS keyring.
   npm install -g @doist/todoist-cli
   ```
 
+Log in once before using the widget:
+
+```bash
+td auth login
+td auth status --json
+```
+
+The first command opens Todoist's browser login; the second verifies that
+it succeeded. The plugin uses this same login, so you do not need to set up
+a separate token for it.
+
 ## Install
 
 ```bash
@@ -54,6 +65,10 @@ The widget lands in the bar's right section by default; move it with
 If `td` has no stored credential yet, the popup shows a **Log in with
 browser** button (opens Todoist's OAuth flow) or a field to paste a
 personal API token (Todoist → Settings → Integrations → Developer).
+
+You can also run `td auth login` in a terminal. After logging in outside
+the plugin, reopen the popup or middle-click the bar icon to check again.
+The widget also checks for an existing login when it loads.
 
 ### Configure
 

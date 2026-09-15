@@ -100,7 +100,9 @@ Panel {
   }
 
   function setCenterHoverRevealSuppressed(value) {
-    if (root.bar && "centerHoverRevealSuppressed" in root.bar)
+    if (root.bar && typeof root.bar.setCenterHoverRevealSuppressed === "function")
+      root.bar.setCenterHoverRevealSuppressed(value)
+    else if (root.bar && "centerHoverRevealSuppressed" in root.bar)
       root.bar.centerHoverRevealSuppressed = value
   }
 
@@ -112,7 +114,10 @@ Panel {
   property string authEmail: ""
   property bool checkingAuth: false
 
+  Component.onCompleted: root.checkAuth()
+
   function checkAuth() {
+    if (root.checkingAuth) return
     checkingAuth = true
     authProc.command = ["td", "auth", "status", "--json"]
     authProc.running = true
@@ -255,7 +260,7 @@ Panel {
   }
 
   function refresh() {
-    if (!root.hasToken) return
+    if (!root.hasToken) { root.checkAuth(); return }
     loading = true
     var tabCommand = root.tabById(root.activeTab).command
     fetchTasksProc.command = ["td"].concat(tabCommand, ["--json", "--full", "--show-urls", "--all"])
@@ -699,6 +704,15 @@ Panel {
           visible: !root.cliMissing && (root.editingToken || !root.hasToken) && !root.checkingAuth
           width: parent.width
           spacing: Style.space(10)
+
+          Text {
+            width: parent.width
+            wrapMode: Text.WordWrap
+            text: Strings.t(root.language, "loginHint")
+            color: root.contentForeground
+            font.family: root.contentFontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
 
           Button {
             width: parent.width
